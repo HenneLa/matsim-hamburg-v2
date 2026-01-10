@@ -36,7 +36,7 @@ import org.matsim.core.controler.listener.BeforeMobsimListener;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.run.HamburgExperimentalConfigGroup;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 
 //TODO: move this to a more central place (probably to ChangeSingleTripModeModule - after tests).
-class ScoreMassConservationControlerListener implements BeforeMobsimListener {
+public class ScoreMassConservationControlerListener implements BeforeMobsimListener {
 
 	private final Population population;
 	private final EventsManager eventsManager;

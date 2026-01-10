@@ -35,8 +35,8 @@ public class RunIncomeBasedTest {
 
         Config config = prepareConfig(args);
 
-        config.controler().setRunId("incomeBasedTest");
-        config.controler().setOutputDirectory(utils.getOutputDirectory());
+        config.controller().setRunId("incomeBasedTest");
+        config.controller().setOutputDirectory(utils.getOutputDirectory());
 
         config.subtourModeChoice().setConsiderCarAvailability(true);
 

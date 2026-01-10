@@ -46,8 +46,8 @@ public class PlanBasedTripsFileWriter {
         Config config = ConfigUtils.createConfig();
         config.global().setCoordinateSystem("EPSG:25832");
         config.plans().setInputFile(populationsFile);
-        config.controler().setRunId(runId);
-        config.controler().setOutputDirectory(outputDirectory);
+        config.controller().setRunId(runId);
+        config.controller().setOutputDirectory(outputDirectory);
 
         Scenario scenario = ScenarioUtils.loadScenario(config);
         Population population = scenario.getPopulation();
@@ -65,7 +65,7 @@ public class PlanBasedTripsFileWriter {
 
     public void write(){
         String split = ";";
-        String outputFolder = this.config.controler().getOutputDirectory();
+        String outputFolder = this.config.controller().getOutputDirectory();
 
         if(!outputFolder.endsWith("/")){
             outputFolder = outputFolder + "/";
@@ -74,7 +74,7 @@ public class PlanBasedTripsFileWriter {
         String fileName = ".output_trips_from_plans.csv.gz";
 
         try {
-            FileOutputStream output = new FileOutputStream(outputFolder + config.controler().getRunId() + fileName);
+            FileOutputStream output = new FileOutputStream(outputFolder + config.controller().getRunId() + fileName);
             Writer writer = new OutputStreamWriter(new GZIPOutputStream(output), "UTF-8");
             writer.write("person" + split + "trip_number" + split + "trip_id" + split + "main_mode");
             if(calcDistances) writer.write(split + "euclideanDistance");

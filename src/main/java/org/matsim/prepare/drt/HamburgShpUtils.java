@@ -19,17 +19,17 @@
 
 package org.matsim.prepare.drt;
 
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFinder;
+import org.geotools.api.data.FileDataStore;
+import org.geotools.api.data.FileDataStoreFinder;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.core.utils.gis.ShapeFileReader;
-import org.matsim.core.utils.io.UncheckedIOException;
-import org.opengis.feature.simple.SimpleFeature;
+import java.io.UncheckedIOException;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

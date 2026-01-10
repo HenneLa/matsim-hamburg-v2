@@ -1,10 +1,11 @@
 package org.matsim.run;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.analysis.here.HereAPITravelTimeValidation;
 import org.matsim.analysis.here.HereAPITravelTimeValidationConfigGroup;
 import org.matsim.api.core.v01.Scenario;
-import org.matsim.contrib.analysis.vsp.traveltimedistance.CarTripsExtractor;
+import org.matsim.analysis.traveltime.CarTripsExtractor;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.events.MatsimEventsReader;
@@ -20,7 +21,7 @@ import static org.matsim.run.RunBaseCaseHamburgScenario.prepareScenario;
  * @author zmeng
  */
 public class RunTravelTimeValidation {
-    private static final Logger log = Logger.getLogger(RunTravelTimeValidation.class);
+    private static final Logger log = LogManager.getLogger(RunTravelTimeValidation.class);
 
     public static void main(String[] args) throws ParseException, IOException {
 
@@ -34,10 +35,10 @@ public class RunTravelTimeValidation {
 
         Config config = prepareConfig(args);
         config.plans().setInputFile("provide input plans");
-        config.controler().setOutputDirectory("set output directory!");
+        config.controller().setOutputDirectory("set output directory!");
         ConfigUtils.addOrGetModule(config, HereAPITravelTimeValidationConfigGroup.class).setNumOfTrips("1000");
 
-        config.controler().setRunId("someRunId");
+        config.controller().setRunId("someRunId");
 
         Scenario scenario = prepareScenario(config);
 

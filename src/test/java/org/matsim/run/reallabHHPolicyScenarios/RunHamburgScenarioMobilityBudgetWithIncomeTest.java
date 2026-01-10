@@ -7,7 +7,7 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.core.config.Config;
-import org.matsim.core.config.groups.StrategyConfigGroup;
+import org.matsim.core.config.groups.ReplanningConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.testcases.MatsimTestUtils;
@@ -40,12 +40,12 @@ public class RunHamburgScenarioMobilityBudgetWithIncomeTest {
         Config config = runner.prepareConfig(args);
 
         //adjusting strategy setting of config so agents try out different modes
-        for (StrategyConfigGroup.StrategySettings setting:    config.strategy().getStrategySettings()) {
+        for (ReplanningConfigGroup.StrategySettings setting:    config.replanning().getStrategySettings()) {
             if (setting.getStrategyName().equals("SubtourModeChoice")) {
                 setting.setWeight(1.0);
             }
         }
-        config.controler().setOutputDirectory(utils.getOutputDirectory());
+        config.controller().setOutputDirectory(utils.getOutputDirectory());
         Scenario scenario = runner.prepareScenario(config);
 
         scenario.getPopulation().getPersons().remove(Id.createPersonId("113f02_2violatingSubtours"));

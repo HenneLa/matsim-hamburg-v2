@@ -37,8 +37,8 @@ public class RunHamburgScenarioTest {
 
         Config config = prepareConfig(args);
 
-        config.controler().setRunId("runTest");
-        config.controler().setOutputDirectory(utils.getOutputDirectory());
+        config.controller().setRunId("runTest");
+        config.controller().setOutputDirectory(utils.getOutputDirectory());
 
         Scenario scenario = prepareScenario(config);
         Controler controler = prepareControler(scenario);

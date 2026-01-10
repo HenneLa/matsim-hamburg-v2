@@ -31,7 +31,7 @@ import org.matsim.core.utils.geometry.CoordinateTransformation;
 import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.core.utils.gis.ShapeFileReader;
 import org.matsim.core.utils.io.IOUtils;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class CreateLink2ParkPressureCSV {
 
 
 		Collection<SimpleFeature> polygons = ShapeFileReader.getAllFeatures(IOUtils.resolveFileOrResource(INPUT_SHAPE_FILE));
-		Network network = NetworkUtils.readTimeInvariantNetwork(INPUT_NETWORK);
+		Network network = NetworkUtils.readNetwork(INPUT_NETWORK);
 
 //		CoordinateTransformation tf = TransformationFactory.getCoordinateTransformation("EPSG:25832", "EPSG:25832");
 		Map<? extends Link, Double> link2Polygon = StreamEx.of(network.getLinks().values())

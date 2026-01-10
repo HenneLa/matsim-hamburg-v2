@@ -2,7 +2,8 @@ package org.matsim.run;
 
 
 import com.google.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.analysis.HamburgIntermodalAnalysisModeIdentifier;
 import org.matsim.analysis.PlanBasedTripsFileWriter;
 import org.matsim.analysis.PlanBasedTripsWriterControlerListener;
@@ -16,13 +17,13 @@ import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.api.core.v01.population.Plan;
-import org.matsim.contrib.analysis.vsp.traveltimedistance.CarTripsExtractor;
+import org.matsim.analysis.traveltime.CarTripsExtractor;
 import org.matsim.contrib.drt.routing.DrtRoute;
 import org.matsim.contrib.drt.routing.DrtRouteFactory;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.ConfigUtils;
-import org.matsim.core.config.groups.PlanCalcScoreConfigGroup;
+import org.matsim.core.config.groups.ScoringConfigGroup;
 import org.matsim.core.config.groups.SubtourModeChoiceConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
@@ -35,7 +36,8 @@ import org.matsim.massConservation4SingleTripModeChoice.PenalizeMassConservation
 import org.matsim.parking.NetworkParkPressureReader;
 import org.matsim.parking.UtilityBasedParkingPressureEventHandler;
 import org.matsim.prepare.freight.bvm.AdjustScenarioForFreight;
-import playground.vsp.scoring.IncomeDependentUtilityOfMoneyPersonScoringParameters;
+// TODO: Re-enable when playground is available in MATSim 2026 or when moved to contrib
+// import playground.vsp.scoring.IncomeDependentUtilityOfMoneyPersonScoringParameters;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -49,7 +51,7 @@ import java.util.List;
  */
 public class RunBaseCaseHamburgScenario {
 
-    private static final Logger log = Logger.getLogger(RunBaseCaseHamburgScenario.class);
+    private static final Logger log = LogManager.getLogger(RunBaseCaseHamburgScenario.class);
 
     public static final String COORDINATE_SYSTEM = "EPSG:25832";
     public static final String VERSION = "v3.0";
@@ -88,10 +90,11 @@ public class RunBaseCaseHamburgScenario {
             @Override
             public void install() {
 
+                // TODO: Re-enable income-based scoring when playground is available in MATSim 2026 or when moved to contrib
                 // use PersonIncomeSpecificScoringFunction if is needed
-                if(ConfigUtils.addOrGetModule(scenario.getConfig(), HamburgExperimentalConfigGroup.class).isUsePersonIncomeBasedScoring()){
-                    bind(ScoringParametersForPerson.class).to(IncomeDependentUtilityOfMoneyPersonScoringParameters.class).in(Singleton.class);
-                }
+                // if(ConfigUtils.addOrGetModule(scenario.getConfig(), HamburgExperimentalConfigGroup.class).isUsePersonIncomeBasedScoring()){
+                //     bind(ScoringParametersForPerson.class).to(IncomeDependentUtilityOfMoneyPersonScoringParameters.class).in(Singleton.class);
+                // }
                //use custom AnalysisMainModeIdentifier
                 bind(AnalysisMainModeIdentifier.class).toInstance(new HamburgIntermodalAnalysisModeIdentifier());
 
@@ -100,7 +103,7 @@ public class RunBaseCaseHamburgScenario {
                 install(new PersonMoneyEventsAnalysisModule());
 
                 //if changeSingleTripMode strategy is used, install module for mass conservation scoring
-                if(getConfig().strategy().getStrategySettings().stream()
+                if(getConfig().replanning().getStrategySettings().stream()
                         .filter(settings -> settings.getStrategyName().equals(DefaultPlanStrategiesModule.DefaultStrategy.ChangeSingleTripMode))
                         .findAny()
                         .isPresent()){
@@ -244,7 +247,7 @@ public class RunBaseCaseHamburgScenario {
 
 
         // delete default modes
-        config.plansCalcRoute().removeModeRoutingParams(TransportMode.ride);
+        config.routing().removeModeRoutingParams(TransportMode.ride);
 
         String[] typedArgs = Arrays.copyOfRange(args, 1, args.length);
         ConfigUtils.applyCommandline(config, typedArgs);
@@ -253,15 +256,15 @@ public class RunBaseCaseHamburgScenario {
         for (long ii = 600; ii <= 97200; ii += 600) {
 
             for (String act : List.of("educ_higher", "educ_tertiary", "educ_other", "home", "educ_primary", "errands", "educ_secondary", "visit", "other")) {
-                config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams(act + "_" + ii + ".0").setTypicalDuration(ii));
+                config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams(act + "_" + ii + ".0").setTypicalDuration(ii));
             }
 
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("work_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(6. * 3600.).setClosingTime(20. * 3600.));
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("business_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(6. * 3600.).setClosingTime(20. * 3600.));
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("leisure_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(9. * 3600.).setClosingTime(27. * 3600.));
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("shop_daily_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(20. * 3600.));
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("shop_other_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(20. * 3600.));
-            config.planCalcScore().addActivityParams(new PlanCalcScoreConfigGroup.ActivityParams("educ_kiga_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(18. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("work_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(6. * 3600.).setClosingTime(20. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("business_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(6. * 3600.).setClosingTime(20. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("leisure_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(9. * 3600.).setClosingTime(27. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("shop_daily_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(20. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("shop_other_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(20. * 3600.));
+            config.scoring().addActivityParams(new ScoringConfigGroup.ActivityParams("educ_kiga_" + ii + ".0").setTypicalDuration(ii).setOpeningTime(8. * 3600.).setClosingTime(18. * 3600.));
         }
 
         ConfigUtils.addOrGetModule(config, SubtourModeChoiceConfigGroup.class).setProbaForRandomSingleTripMode(hamburgCfg.getSubTourModeChoiceProbaForSingleTripChange());

@@ -22,7 +22,8 @@ package org.matsim.prepare.drt;
 import com.opencsv.CSVWriter;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
@@ -35,6 +36,8 @@ import org.matsim.contrib.dvrp.fleet.DvrpVehicle;
 import org.matsim.contrib.dvrp.fleet.DvrpVehicleSpecification;
 import org.matsim.contrib.dvrp.fleet.FleetWriter;
 import org.matsim.contrib.dvrp.fleet.ImmutableDvrpVehicleSpecification;
+import org.matsim.contrib.dvrp.load.DvrpLoad;
+import org.matsim.contrib.dvrp.load.DvrpLoadType;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.gbl.MatsimRandom;
@@ -66,7 +69,7 @@ import java.util.stream.Collectors;
  *
  */
 public class DrtFeederVehicleCreator {
-	private static final Logger log = Logger.getLogger(DrtFeederVehicleCreator.class);
+	private static final Logger log = LogManager.getLogger(DrtFeederVehicleCreator.class);
 
 	//NOTE: for emission analysis, it is important to include 'drt' in the vehicleId
 	public final static String VEHICLE_PREFIX = "drtFeeder_";
@@ -165,7 +168,14 @@ public class DrtFeederVehicleCreator {
 					.build());
 		}
 		String fileNameBase = vehiclesFilePrefix + amount + "vehicles-" + seats + "seats";
-		new FleetWriter(vehicles.stream()).write(fileNameBase + ".xml.gz");
+		new FleetWriter(vehicles.stream(), new DvrpLoadType() {
+			@Override public java.util.List<String> getDimensions() { return java.util.List.of("capacity"); }
+			@Override public int size() { return 1; }
+			@Override public DvrpLoad getEmptyLoad() { return null; }
+			@Override public String serialize(DvrpLoad load) { return ""; }
+			@Override public DvrpLoad deserialize(String attributes) { return null; }
+			@Override public DvrpLoad fromMap(java.util.Map<String, Number> values) { return null; }
+		}).write(fileNameBase + ".xml.gz");
 
 		writeVehStartPositionsCSV(vehicles, fileNameBase);
 	}
@@ -271,7 +281,14 @@ public class DrtFeederVehicleCreator {
 
 		}
 		String fileNameBase = vehiclesFilePrefix + amount + "vehicles-" + seats + "seats";
-		new FleetWriter(vehicles.stream()).write(fileNameBase + ".xml.gz");
+		new FleetWriter(vehicles.stream(), new DvrpLoadType() {
+			@Override public java.util.List<String> getDimensions() { return java.util.List.of("capacity"); }
+			@Override public int size() { return 1; }
+			@Override public DvrpLoad getEmptyLoad() { return null; }
+			@Override public String serialize(DvrpLoad load) { return ""; }
+			@Override public DvrpLoad deserialize(String attributes) { return null; }
+			@Override public DvrpLoad fromMap(java.util.Map<String, Number> values) { return null; }
+		}).write(fileNameBase + ".xml.gz");
 
 		writeVehStartPositionsCSV(vehicles, fileNameBase);
 	}

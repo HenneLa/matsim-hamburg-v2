@@ -49,7 +49,7 @@ public class SetLinkIdsToCarNetwork {
 		String inputPopulation = "https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v3/v3.0/input/baseCase/hamburg-v3.0-10pct-base.plans.xml.gz";
 		String outputPopulation = "D:/svn/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v3/v3.0/input/baseCase/hamburg-v3.0-10pct-base.plans-acts-on-car-network.xml.gz";
 
-		Network net = NetworkUtils.readTimeInvariantNetwork(outputNetwork);
+		Network net = NetworkUtils.readNetwork(outputNetwork);
 //		filterAndWriteCarNetwork(net, outputNetwork);
 
 		//read population
@@ -79,7 +79,7 @@ public class SetLinkIdsToCarNetwork {
 		nonCarLinks.forEach(nonCarLink -> net.removeLink(nonCarLink));
 		MultimodalNetworkCleaner cleaner = new MultimodalNetworkCleaner(net);
 		cleaner.run(Set.of(TransportMode.car));
-		cleaner.removeNodesWithoutLinks();
+		// removeNodesWithoutLinks() removed in MATSim 2026 - nodes are cleaned by run()
 		NetworkUtils.writeNetwork(net, outputNetwork);
 	}
 }

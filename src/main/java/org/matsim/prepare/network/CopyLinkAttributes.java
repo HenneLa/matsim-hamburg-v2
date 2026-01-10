@@ -20,7 +20,8 @@
 
 package org.matsim.prepare.network;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -28,16 +29,16 @@ import org.matsim.core.network.NetworkUtils;
 
 public class CopyLinkAttributes {
 
-	private static final Logger log = Logger.getLogger(CopyLinkAttributes.class);
+	private static final Logger log = LogManager.getLogger(CopyLinkAttributes.class);
 
 	public static void main(String[] args) {
 
 //		Network netV1_0 = NetworkUtils.readNetwork("https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v1/hamburg-v1.0/hamburg-v1.0-network-with-pt.xml.gz");
-		Network netV2_0 = NetworkUtils.readTimeInvariantNetwork("https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v2/hamburg-v2.0/baseCase/input/hamburg-v2.0-network-with-pt.xml.gz");
+		Network netV2_0 = NetworkUtils.readNetwork("https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v2/hamburg-v2.0/baseCase/input/hamburg-v2.0-network-with-pt.xml.gz");
 
 		String reallabHH2030Net = "D:/svn/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v2/hamburg-v2.0/reallab2030plus/input/network/hamburg-v2.0-reallab2030plus-network-with-pt-and-parkingPressure.xml.gz";
 
-		Network netV2_0_reallabHH2030plus = NetworkUtils.readTimeInvariantNetwork(reallabHH2030Net);
+		Network netV2_0_reallabHH2030plus = NetworkUtils.readNetwork(reallabHH2030Net);
 
 //		for (Link link : netV2_0.getLinks().values()) {
 //			if(link.getAllowedModes().contains(TransportMode.car)){

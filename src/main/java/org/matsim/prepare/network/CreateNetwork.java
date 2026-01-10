@@ -95,14 +95,13 @@ public final class CreateNetwork implements Callable<Integer> {
 			return 0;
 		}
 
-		SumoNetworkConverter converter = SumoNetworkConverter.newInstance(input, output, null, "EPSG:32632", RunBaseCaseHamburgScenario.COORDINATE_SYSTEM);
+		SumoNetworkConverter converter = SumoNetworkConverter.newInstance(input, output, "EPSG:32632", RunBaseCaseHamburgScenario.COORDINATE_SYSTEM);
 
 		Network network = NetworkUtils.createNetwork();
 		Lanes lanes = LanesUtils.createLanesContainer();
 
-		SumoNetworkHandler handler = converter.convert(network, lanes);
-
-		converter.calculateLaneCapacities(network, lanes);
+		// MATSim 2026: convert() now only takes Network, lanes handled internally
+		SumoNetworkHandler handler = converter.convert(network);
 
 		// This needs to run without errors, otherwise network is broken
 		network.getLinks().values().forEach(link -> {

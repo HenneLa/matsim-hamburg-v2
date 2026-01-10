@@ -1,5 +1,10 @@
 # The MATSim Open Hamburg Scenario
 
+
+### Update: Migration to MATSim 2026 & Java 21
+
+#### This fork has been migrated to Java 21 and MATSim 2026.0 (Snapshot 2025w26).
+---
 ### About this project
 
 This repository provides an open MATSim transport model for Hamburg, provided by the [Transport Systems Planning and Transport Telematics group](https://www.vsp.tu-berlin.de) of [Technische Universität Berlin](http://www.tu-berlin.de).

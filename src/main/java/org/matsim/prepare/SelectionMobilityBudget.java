@@ -1,6 +1,7 @@
 package org.matsim.prepare;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -11,16 +12,14 @@ import org.matsim.api.core.v01.population.Population;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.core.utils.gis.ShapeFileReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.geometry.Boundary;
-import org.opengis.geometry.BoundingBox;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.util.*;
 
 
 public class SelectionMobilityBudget {
 
-    private static final Logger log = Logger.getLogger(SelectionMobilityBudget.class);
+    private static final Logger log = LogManager.getLogger(SelectionMobilityBudget.class);
 
 
     public static void filterForRegion(Population population, String shapeFile, Map<Id<Person>, Double> personsEligibleForMobilityBudget) {
@@ -28,12 +27,7 @@ public class SelectionMobilityBudget {
 
         //List<Geometry> gg = ShpGeometryUtils.loadGeometries(IOUtils.resolveFileOrResource(""));
         Collection<SimpleFeature> features = ShapeFileReader.getAllFeatures(shapeFile);
-        //BoundingBox box = null;
-        MultiPolygon geometry =null;
-
-        BoundingBox box = null;
-        Boundary boundary = null;
-        //BoundingBox box;
+        MultiPolygon geometry = null;
         for (SimpleFeature feature: features) {
             if (feature.getAttribute("name").equals( "Hamburg_city")) {
                 geometry = (MultiPolygon) feature.getDefaultGeometry();

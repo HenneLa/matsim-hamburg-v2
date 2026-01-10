@@ -13,9 +13,9 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
-import org.matsim.contrib.analysis.vsp.traveltimedistance.CarTrip;
-import org.matsim.contrib.analysis.vsp.traveltimedistance.CarTripsExtractor;
-import org.matsim.contrib.analysis.vsp.traveltimedistance.HereMapsRouteValidator;
+import org.matsim.analysis.traveltime.CarTrip;
+import org.matsim.analysis.traveltime.CarTripsExtractor;
+import org.matsim.analysis.traveltime.HereMapsRouteValidator;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.utils.collections.Tuple;
@@ -24,7 +24,7 @@ import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.core.utils.geometry.transformations.TransformationFactory;
 import org.matsim.core.utils.gis.ShapeFileReader;
 import org.matsim.core.utils.io.IOUtils;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,9 +59,9 @@ public class HereAPITravelTimeValidation {
 
         CoordinateTransformation transformation = TransformationFactory.getCoordinateTransformation(config.global().getCoordinateSystem(), TransformationFactory.WGS84);
 
-        HereMapsRouteValidator travelTimeValidator = new HereMapsRouteValidator(config.controler().getOutputDirectory() + "/"
+        HereMapsRouteValidator travelTimeValidator = new HereMapsRouteValidator(config.controller().getOutputDirectory() + "/"
                 + "here_validation_"
-                + config.controler().getRunId() + "_"
+                + config.controller().getRunId() + "_"
                 + hereAPITravelTimeValidationConfigGroup.getDate() + "/"
                 + hereAPITravelTimeValidationConfigGroup.getTimeWindow()+ "/",
                 hereAPITravelTimeValidationConfigGroup.getHereMapsAPIKey(),
@@ -154,9 +154,9 @@ public class HereAPITravelTimeValidation {
 
     private void writeTravelTimeValidation(List<CarTrip> trips, double time1, double time2) {
 
-        String folder = config.controler().getOutputDirectory() + "/"
+        String folder = config.controller().getOutputDirectory() + "/"
                 + "here_validation_"
-                + config.controler().getRunId() + "_"
+                + config.controller().getRunId() + "_"
                 + hereAPITravelTimeValidationConfigGroup.getDate() + "/"
                 + seconds2hhmmss((long) time1) + "-" + seconds2hhmmss((long) time2) + "/";
 

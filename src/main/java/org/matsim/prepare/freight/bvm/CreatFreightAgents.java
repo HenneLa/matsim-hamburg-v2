@@ -1,6 +1,7 @@
 package org.matsim.prepare.freight.bvm;
 
-import org.jboss.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
@@ -13,7 +14,7 @@ import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.core.utils.gis.ShapeFileReader;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +28,7 @@ import java.util.*;
  */
 public class CreatFreightAgents {
 
-    private static final Logger log = Logger.getLogger(CreatFreightAgents.class);
+    private static final Logger log = LogManager.getLogger(CreatFreightAgents.class);
     private static final Random rnd = MatsimRandom.getLocalInstance();
     public static final String COMMERCIAL = "commercial";
     private static int totalTripNum = 0;

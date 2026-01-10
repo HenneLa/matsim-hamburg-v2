@@ -1,6 +1,7 @@
 package org.matsim.analysis.accidents;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.network.Link;
@@ -25,7 +26,7 @@ import java.util.Set;
  */
 
 public class RunAccidentsHamburg {
-    private static final Logger log = Logger.getLogger(RunAccidentsHamburg.class);
+    private static final Logger log = LogManager.getLogger(RunAccidentsHamburg.class);
 
     private static final boolean PREPROCESS_NETWORK_DEFAULT = true;
     private static final boolean BASE_CASE_DEFAULT = true;
@@ -54,13 +55,13 @@ public class RunAccidentsHamburg {
         } else {
             config = RunReallabHH2030Scenario.prepareConfig(configArgs);
         }
-        config.plans().setInputFile(config.controler().getRunId() + ".output_plans.xml.gz");
-        String outputDir = config.controler().getOutputDirectory().substring(0, config.controler().getOutputDirectory().lastIndexOf( '/') + 1) + "accidentsAnalysis/";
-        config.controler().setOutputDirectory(outputDir);
+        config.plans().setInputFile(config.controller().getRunId() + ".output_plans.xml.gz");
+        String outputDir = config.controller().getOutputDirectory().substring(0, config.controller().getOutputDirectory().lastIndexOf( '/') + 1) + "accidentsAnalysis/";
+        config.controller().setOutputDirectory(outputDir);
 
-        config.controler().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.overwriteExistingFiles);
-        config.controler().setLastIteration(0);
-        config.strategy().setFractionOfIterationsToDisableInnovation(0);
+        config.controller().setOverwriteFileSetting(OutputDirectoryHierarchy.OverwriteFileSetting.overwriteExistingFiles);
+        config.controller().setLastIteration(0);
+        config.replanning().setFractionOfIterationsToDisableInnovation(0);
         config.travelTimeCalculator().setTraveltimeBinSize(2*3600);
         AccidentsConfigGroup accidentsSettings = ConfigUtils.addOrGetModule(config, AccidentsConfigGroup.class);
         accidentsSettings.setScaleFactor(SCALE_FACTOR);
@@ -75,7 +76,7 @@ public class RunAccidentsHamburg {
             } else {
                 scenario =  RunReallabHH2030Scenario.prepareScenario(config);
             }
-            Network networkWithRealisticNumberOfLanes = NetworkUtils.readTimeInvariantNetwork("https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v1/hamburg-v1.0/hamburg-v1.0-network-with-pt.xml.gz");
+            Network networkWithRealisticNumberOfLanes = NetworkUtils.readNetwork("https://svn.vsp.tu-berlin.de/repos/public-svn/matsim/scenarios/countries/de/hamburg/hamburg-v1/hamburg-v1.0/hamburg-v1.0-network-with-pt.xml.gz");
             Set<Id<Link>> tunnelLinks;
             if(baseCase){
                 //2021

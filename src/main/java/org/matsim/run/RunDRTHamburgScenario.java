@@ -3,7 +3,8 @@ package org.matsim.run;
 import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
 import ch.sbb.matsim.routing.pt.raptor.RaptorIntermodalAccessEgress;
 import com.google.common.base.Preconditions;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.api.core.v01.TransportMode;
 import org.matsim.api.core.v01.network.Link;
@@ -22,11 +23,12 @@ import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.network.algorithms.MultimodalNetworkCleaner;
 import org.matsim.core.utils.misc.Counter;
-import org.matsim.extensions.pt.fare.intermodalTripFareCompensator.IntermodalTripFareCompensatorsConfigGroup;
-import org.matsim.extensions.pt.fare.intermodalTripFareCompensator.IntermodalTripFareCompensatorsModule;
-import org.matsim.extensions.pt.routing.EnhancedRaptorIntermodalAccessEgress;
-import org.matsim.extensions.pt.routing.ptRoutingModes.PtIntermodalRoutingModesConfigGroup;
-import org.matsim.extensions.pt.routing.ptRoutingModes.PtIntermodalRoutingModesModule;
+// TODO: Re-enable pt-extensions when available for MATSim 2026
+// import org.matsim.extensions.pt.fare.intermodalTripFareCompensator.IntermodalTripFareCompensatorsConfigGroup;
+// import org.matsim.extensions.pt.fare.intermodalTripFareCompensator.IntermodalTripFareCompensatorsModule;
+// import org.matsim.extensions.pt.routing.EnhancedRaptorIntermodalAccessEgress;
+// import org.matsim.extensions.pt.routing.ptRoutingModes.PtIntermodalRoutingModesConfigGroup;
+// import org.matsim.extensions.pt.routing.ptRoutingModes.PtIntermodalRoutingModesModule;
 import org.matsim.prepare.drt.HamburgShpUtils;
 import org.matsim.prepare.pt.ClassifyStationType;
 import org.matsim.pt.transitSchedule.api.TransitSchedule;
@@ -41,7 +43,7 @@ import java.util.Set;
  */
 public class RunDRTHamburgScenario {
 
-    private static final Logger log = Logger.getLogger(RunDRTHamburgScenario.class);
+    private static final Logger log = LogManager.getLogger(RunDRTHamburgScenario.class);
 
     public static final String DRT_FEEDER_MODE = "drt_feeder";
     private static final String DRT_ACCESS_EGRESS_TO_PT_STOP_FILTER_ATTRIBUTE = "drtStopFilter";
@@ -88,23 +90,23 @@ public class RunDRTHamburgScenario {
         MultiModeDrtConfigGroup mmCfg = MultiModeDrtConfigGroup.get(controler.getConfig());
         controler.configureQSimComponents(DvrpQSimComponents.activateAllModes(mmCfg));
 
-        controler.addOverridingModule(new AbstractModule() {
-
-            @Override
-            public void install() {
-                //need to bind this in another overriding module than in the module where we install the SwissRailRaptorModule
-                bind(RaptorIntermodalAccessEgress.class).to(EnhancedRaptorIntermodalAccessEgress.class);
-            }
-        });
-
-        controler.addOverridingModule(new IntermodalTripFareCompensatorsModule());
-        controler.addOverridingModule(new PtIntermodalRoutingModesModule());
+        // TODO: Re-enable pt-extensions when available for MATSim 2026
+        // controler.addOverridingModule(new AbstractModule() {
+        //     @Override
+        //     public void install() {
+        //         //need to bind this in another overriding module than in the module where we install the SwissRailRaptorModule
+        //         bind(RaptorIntermodalAccessEgress.class).to(EnhancedRaptorIntermodalAccessEgress.class);
+        //     }
+        // });
+        // controler.addOverridingModule(new IntermodalTripFareCompensatorsModule());
+        // controler.addOverridingModule(new PtIntermodalRoutingModesModule());
     }
 
     public static Config prepareConfig(String[] args, ConfigGroup... customModules) {
+        // TODO: Re-enable pt-extensions config groups when available for MATSim 2026
         ConfigGroup[] customModulesToAdd = new ConfigGroup[] { new DvrpConfigGroup(), new MultiModeDrtConfigGroup(),
-                new SwissRailRaptorConfigGroup(), new IntermodalTripFareCompensatorsConfigGroup(),
-                new PtIntermodalRoutingModesConfigGroup()};
+                new SwissRailRaptorConfigGroup() /*, new IntermodalTripFareCompensatorsConfigGroup(),
+                new PtIntermodalRoutingModesConfigGroup()*/ };
         ConfigGroup[] customModulesAll = new ConfigGroup[customModules.length + customModulesToAdd.length];
 
         int counter = 0;
@@ -123,7 +125,7 @@ public class RunDRTHamburgScenario {
         config.qsim().setSimStarttimeInterpretation(QSimConfigGroup.StarttimeInterpretation.onlyUseStarttime);
         config.qsim().setSimEndtimeInterpretation(QSimConfigGroup.EndtimeInterpretation.onlyUseEndtime);
 
-        DrtConfigs.adjustMultiModeDrtConfig(MultiModeDrtConfigGroup.get(config), config.planCalcScore(), config.plansCalcRoute());
+        DrtConfigs.adjustMultiModeDrtConfig(MultiModeDrtConfigGroup.get(config), config.scoring(), config.routing());
 
         return config;
     }

@@ -22,7 +22,8 @@ package org.matsim.prepare.population;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.network.Link;
 import org.matsim.api.core.v01.network.Network;
@@ -59,7 +60,7 @@ import java.util.*;
  */
 public class HamburgPrepareOpenPlansFromRawPlansAndCalibratedClosedPlans {
 
-	private static final Logger log = Logger.getLogger(HamburgPrepareOpenPlansFromRawPlansAndCalibratedClosedPlans.class);
+	private static final Logger log = LogManager.getLogger(HamburgPrepareOpenPlansFromRawPlansAndCalibratedClosedPlans.class);
 
 	public static void main(String[] args) {
 
@@ -89,7 +90,7 @@ public class HamburgPrepareOpenPlansFromRawPlansAndCalibratedClosedPlans {
 		}
 		log.info("finished to read idMapping File");
 
-//		Network network = NetworkUtils.readTimeInvariantNetwork(targetNetwork);
+//		Network network = NetworkUtils.readNetwork(targetNetwork);
 		Network network = null; //we resolve the grid coordinates later and map them to the corresponding links afterwards so we can save reading the network here. If no grid resolving is conducted, uncomment the line above.
 
 		Population attributesAndCoordinatesPopulation = loadFromPlansWithExternalAttributesFile(attributesFile, plansWithCoordinatesAndIds);

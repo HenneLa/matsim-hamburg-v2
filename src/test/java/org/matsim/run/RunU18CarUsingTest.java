@@ -31,8 +31,8 @@ public class RunU18CarUsingTest {
 
         Config config = prepareConfig(args);
 
-        config.controler().setRunId("u18CarUsingTest");
-        config.controler().setOutputDirectory(utils.getOutputDirectory());
+        config.controller().setRunId("u18CarUsingTest");
+        config.controller().setOutputDirectory(utils.getOutputDirectory());
 
         config.plans().setInputFile("plans/test-u18-hamburg.plans.xml");
         ConfigUtils.addOrGetModule(config, HamburgExperimentalConfigGroup.class).setUsePersonIncomeBasedScoring(false); //TODO assign (dummy) incomes and remove this config parameter! such that incomeBasedScoring is mandatory!

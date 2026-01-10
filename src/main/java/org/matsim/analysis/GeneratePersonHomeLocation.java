@@ -1,6 +1,7 @@
 package org.matsim.analysis;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.matsim.api.core.v01.Coord;
@@ -15,7 +16,7 @@ import org.matsim.core.scenario.ScenarioUtils;
 import org.matsim.core.utils.geometry.geotools.MGC;
 import org.matsim.core.utils.gis.ShapeFileReader;
 import org.matsim.run.RunBaseCaseHamburgScenario;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 import javax.annotation.Nullable;
 import java.io.BufferedWriter;
@@ -34,7 +35,7 @@ import java.util.Map;
 //TODO: change to static methods
 public class GeneratePersonHomeLocation {
 
-    private static final Logger log =Logger.getLogger(GeneratePersonHomeLocation.class);
+    private static final Logger log =LogManager.getLogger(GeneratePersonHomeLocation.class);
     private Map<Person, Coord> person2homeLocation = new HashMap<>();
     private Map<Coord, String> coord2Area = new HashMap<>();
 

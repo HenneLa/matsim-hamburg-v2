@@ -7,7 +7,6 @@ import org.matsim.api.core.v01.events.PersonArrivalEvent;
 import org.matsim.api.core.v01.events.PersonScoreEvent;
 import org.matsim.api.core.v01.events.handler.PersonArrivalEventHandler;
 import org.matsim.core.api.experimental.events.EventsManager;
-import org.matsim.run.RunSharingScenario;
 
 import java.util.Set;
 
@@ -23,7 +22,7 @@ public class UtilityBasedParkingPressureEventHandler implements PersonArrivalEve
     @Inject
     Scenario scenario;
 
-	private final Set<String> parkingRelevantTransportModes = Set.of(TransportMode.car, RunSharingScenario.SHARING_CAR_MODE);
+	private final Set<String> parkingRelevantTransportModes = Set.of(TransportMode.car, TransportMode.ride);
 	public static final String PARK_PRESSURE_ATTRIBUTE_NAME = "parkPressure";
 
     @Override

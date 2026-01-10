@@ -30,7 +30,7 @@ public class PenalizeMassConservationViolationsModule extends AbstractModule {
 
 	@Override
 	public void install() {
-		boolean strategyConfigured = getConfig().strategy().getStrategySettings().stream()
+		boolean strategyConfigured = getConfig().replanning().getStrategySettings().stream()
 				.filter(settings -> settings.getStrategyName().equals(DefaultPlanStrategiesModule.DefaultStrategy.ChangeSingleTripMode))
 				.findAny()
 				.isPresent();
